@@ -1,0 +1,118 @@
+Location Management Service:
+
+Add Location (POST): Adds a new location.
+
+Request URL: http://localhost:9001/locations/add
+Request Body (JSON):
+json
+Copy code
+{
+  "name": "New York",
+  "latitude": 40.7128,
+  "longitude": -74.0060
+}
+Get All Locations (GET): Retrieves all locations.
+
+Request URL: http://localhost:9001/locations
+Get Location by ID (GET): Retrieves a location by ID.
+
+Request URL: http://localhost:9001/locations/{locationId}
+Update Location (PUT): Updates a location by ID.
+
+Request URL: http://localhost:9001/locations/{locationId}
+Request Body (JSON):
+json
+Copy code
+{
+  "name": "Updated Location Name",
+  "latitude": 41.7128,
+  "longitude": -75.0060
+}
+Delete Location (DELETE): Deletes a location by ID.
+
+Request URL: http://localhost:9001/locations/{locationId}
+Historical Weather Service:
+
+Add Historical Weather Data (POST): Adds historical weather data.
+
+Request URL: http://localhost:9005/historical-weather/add
+Request Body (JSON):
+json
+Copy code
+{
+  "date": "2023-09-01",
+  "location": "New York",
+  "weather": "Sunny",
+  "temperature": 30.0
+}
+Get Weather by Location and Date (GET): Retrieves historical weather data by location and date.
+
+Request URL: http://localhost:9005/historical-weather/location
+Query Params:
+location (String): The location name.
+date (Date): The date in ISO format (e.g., 2023-09-01).
+Get All Historical Weather Data (GET): Retrieves all historical weather data.
+
+Request URL: http://localhost:9005/historical-weather/all
+Update Historical Weather Data (PUT): Updates historical weather data by ID.
+
+Request URL: http://localhost:9005/historical-weather/{id}
+Request Body (JSON):
+json
+Copy code
+{
+  "date": "2023-09-01",
+  "location": "Updated Location",
+  "weather": "Updated Weather",
+  "temperature": 25.0
+}
+Delete Historical Weather Data (DELETE): Deletes historical weather data by ID.
+
+Request URL: http://localhost:9005/historical-weather/{id}
+Weather Forecast Service:
+
+Get Weather Forecast (GET): Retrieves weather forecast data by location and date.
+Request URL: http://localhost:9091/weather-forecast/{locationId}
+Query Params:
+date (String): The date in ISO format (e.g., 2023-09-01).
+Now you have Postman requests for all your microservices. You can import these requests into your Postman application and use them to interact with your services.
+
+
+
+
+
+
+The three microservices you've created—Location Management, Historical Weather, and Weather Forecast services—can communicate with each other by making HTTP requests. While they don't have direct dependencies on each other in terms of service-to-service communication, you can establish communication between them through RESTful API calls.
+
+Here's how these microservices can communicate:
+
+Location Management Service: This service manages locations and provides endpoints for adding, retrieving, updating, and deleting locations. It doesn't directly communicate with the other two services but serves as a source of location data for them.
+
+Historical Weather Service: This service stores historical weather data associated with specific locations and dates. It doesn't have direct communication with the other services, but it can interact with the Location Management Service to retrieve location information when storing historical weather data.
+
+Weather Forecast Service: This service provides weather forecasts based on location and date. It can communicate with the Historical Weather Service to retrieve historical weather data for a specific location and date, which can be used to generate forecasts.
+
+Here's a scenario illustrating the communication flow:
+
+A client makes a request to the Weather Forecast Service to get a weather forecast for a specific location and date (e.g., "New York" on "2023-09-01").
+
+The Weather Forecast Service receives the request and needs historical weather data for that location and date to generate the forecast.
+
+The Weather Forecast Service makes an HTTP GET request to the Historical Weather Service, providing the location ("New York") and date ("2023-09-01") as query parameters.
+
+The Historical Weather Service receives the request, queries its database for historical weather data for "New York" on "2023-09-01," and returns the data to the Weather Forecast Service.
+
+The Weather Forecast Service uses the historical weather data along with its logic to generate the weather forecast.
+
+In this scenario, the services communicate indirectly through HTTP requests. The Historical Weather Service serves as a data source for the Weather Forecast Service, and the Location Management Service provides location data used by both the Historical Weather Service and the Weather Forecast Service.
+
+By utilizing HTTP-based APIs and making requests to specific endpoints, these microservices can interact and share data as needed, enabling a loosely coupled and modular architecture.
+
+
+
+
+
+
+
+
+
